@@ -1,0 +1,7 @@
+[gd_resource type="Theme" format=3 uid="uid://btfuk8lvwal51"]
+
+[ext_resource type="FontFile" uid="uid://dlcif50jnfw1q" path="res://assets/1up.ttf" id="1_xavh1"]
+
+[resource]
+default_font = ExtResource("1_xavh1")
+default_font_size = 50
