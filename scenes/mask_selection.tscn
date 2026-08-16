@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://c3dk8wnob3sm"]
+
+[ext_resource type="Script" uid="uid://x0xt5y5iywb2" path="res://scripts/mask_selection.gd" id="1_c85p7"]
+[ext_resource type="PackedScene" uid="uid://cl8whuomp8l6q" path="res://scenes/mask_button.tscn" id="2_7tmsa"]
+
+[node name="MaskSelection" type="Control" unique_id=975957132]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_c85p7")
+MaskButton = ExtResource("2_7tmsa")
