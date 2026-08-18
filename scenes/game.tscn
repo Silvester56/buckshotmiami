@@ -1,6 +1,20 @@
 [gd_scene format=3 uid="uid://m2b4paxklpd7"]
 
 [ext_resource type="Script" uid="uid://c32ape7e3mj7m" path="res://scripts/game.gd" id="1_uwrxv"]
+[ext_resource type="Texture2D" uid="uid://c6rqfn13lc87v" path="res://assets/characters.png" id="2_yqjtg"]
 
 [node name="Game" type="Node2D" unique_id=1685807169]
 script = ExtResource("1_uwrxv")
+
+[node name="Dealer" type="Sprite2D" parent="." unique_id=284995910]
+position = Vector2(324, 50)
+texture = ExtResource("2_yqjtg")
+hframes = 2
+vframes = 2
+frame = 2
+
+[node name="Player" type="Sprite2D" parent="." unique_id=1626466857]
+position = Vector2(324, 598)
+texture = ExtResource("2_yqjtg")
+hframes = 2
+vframes = 2
