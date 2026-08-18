@@ -3,8 +3,13 @@
 [ext_resource type="Script" uid="uid://dx3j8fyqnq43e" path="res://scripts/mask_button.gd" id="1_xtk6a"]
 
 [node name="MaskButton" type="Button" unique_id=1372234337]
-offset_right = 430.0
-offset_bottom = 110.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -128.0
+offset_right = 128.0
+offset_bottom = 64.0
+grow_horizontal = 2
 script = ExtResource("1_xtk6a")
 
 [connection signal="pressed" from="." to="." method="_on_pressed"]

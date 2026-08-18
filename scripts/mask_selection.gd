@@ -14,7 +14,7 @@ func _ready() -> void:
 	var newPositionY = 0;
 	for mask in listOfMasks:
 		var maskButton = MaskButton.instantiate()
-		newPositionY = newPositionY + 120
+		newPositionY = newPositionY + 100
 		maskButton.position.y = newPositionY
 		maskButton.text = mask.label
 		add_child(maskButton)
