@@ -17,4 +17,15 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	if Input.is_action_just_pressed("pause"):
+		$PauseMenu.show()
+		get_tree().paused = true
+
+func _on_continue_pressed() -> void:
+	$PauseMenu.hide()
+	get_tree().paused = false
+
+func _on_quit_pressed() -> void:
+	$PauseMenu.hide()
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
