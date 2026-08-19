@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bt4a0o4pyynj2" path="res://scripts/main_menu.gd" id="1_ekxnf"]
 [ext_resource type="Theme" uid="uid://btfuk8lvwal51" path="res://themes/menu.tres" id="1_l6cm7"]
+[ext_resource type="Texture2D" uid="uid://c716h3rytoi1v" path="res://assets/menu.png" id="2_bqqt6"]
 
 [node name="MainMenu" type="Control" unique_id=1187902145]
 layout_mode = 3
@@ -11,6 +12,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ekxnf")
+
+[node name="Beach" type="TextureRect" parent="." unique_id=906324180]
+layout_mode = 0
+offset_right = 512.0
+offset_bottom = 512.0
+texture = ExtResource("2_bqqt6")
 
 [node name="Title" type="Label" parent="." unique_id=1540129535]
 layout_mode = 1

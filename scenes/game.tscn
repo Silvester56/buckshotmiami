@@ -1,11 +1,17 @@
 [gd_scene format=3 uid="uid://m2b4paxklpd7"]
 
 [ext_resource type="Script" uid="uid://c32ape7e3mj7m" path="res://scripts/game.gd" id="1_uwrxv"]
+[ext_resource type="Texture2D" uid="uid://o165bq440eek" path="res://assets/board.png" id="2_lbhrr"]
 [ext_resource type="Texture2D" uid="uid://c6rqfn13lc87v" path="res://assets/characters.png" id="2_yqjtg"]
 [ext_resource type="Theme" uid="uid://btfuk8lvwal51" path="res://themes/menu.tres" id="3_lnu2h"]
 
 [node name="Game" type="Node2D" unique_id=1685807169]
 script = ExtResource("1_uwrxv")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1575029082]
+offset_right = 512.0
+offset_bottom = 512.0
+texture = ExtResource("2_lbhrr")
 
 [node name="Dealer" type="Sprite2D" parent="." unique_id=284995910]
 position = Vector2(256, 64)

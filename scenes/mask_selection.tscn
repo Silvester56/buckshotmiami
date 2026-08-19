@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://x0xt5y5iywb2" path="res://scripts/mask_selection.gd" id="1_c85p7"]
 [ext_resource type="PackedScene" uid="uid://cl8whuomp8l6q" path="res://scenes/mask_button.tscn" id="2_7tmsa"]
+[ext_resource type="Texture2D" uid="uid://c716h3rytoi1v" path="res://assets/menu.png" id="3_4v53j"]
 
 [node name="MaskSelection" type="Control" unique_id=975957132]
 layout_mode = 3
@@ -12,3 +13,9 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_c85p7")
 MaskButton = ExtResource("2_7tmsa")
+
+[node name="Beach" type="TextureRect" parent="." unique_id=485882221]
+layout_mode = 0
+offset_right = 512.0
+offset_bottom = 512.0
+texture = ExtResource("3_4v53j")
