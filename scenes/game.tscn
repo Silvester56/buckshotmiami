@@ -20,6 +20,17 @@ texture = ExtResource("2_yqjtg")
 hframes = 2
 vframes = 2
 
+[node name="DealerHealth" type="Label" parent="." unique_id=1369694520]
+offset_left = 256.0
+offset_right = 384.0
+offset_bottom = 32.0
+
+[node name="PlayerHealth" type="Label" parent="." unique_id=1298257559]
+offset_left = 256.0
+offset_top = 480.0
+offset_right = 384.0
+offset_bottom = 512.0
+
 [node name="PauseMenu" type="Control" parent="." unique_id=1186123291]
 process_mode = 2
 visible = false
