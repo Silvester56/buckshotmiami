@@ -33,8 +33,14 @@ func _process(delta: float) -> void:
 		$PauseMenu.show()
 		get_tree().paused = true
 
-func changeHealth(player: bool, delta: int) -> void:
-	if (player):
+func shoot(isPlayer: bool) -> void:
+	if (len(shells) > 0):
+		var current_shell = shells.pop_front()
+		if (current_shell):
+			changeHealth(isPlayer, -1)
+
+func changeHealth(isPlayer: bool, delta: int) -> void:
+	if (isPlayer):
 		playerHealth = clampi(playerHealth + delta, 0, maxPlayerHealth)
 	else:
 		dealerHealth = clampi(dealerHealth + delta, 0, maxDealerHealth)
@@ -54,10 +60,10 @@ func _on_dealer_area_input_event(viewport: Node, event: InputEvent, shape_idx: i
 	if event is InputEventMouseButton \
 	and event.button_index == MouseButton.MOUSE_BUTTON_LEFT \
 	and event.is_pressed():
-		changeHealth(false, -1)
+		shoot(false)
 
 func _on_player_area_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton \
 	and event.button_index == MouseButton.MOUSE_BUTTON_LEFT \
 	and event.is_pressed():
-		changeHealth(true, -1)
+		shoot(true)
