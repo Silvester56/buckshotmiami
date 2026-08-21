@@ -21,10 +21,13 @@ func _ready() -> void:
 	dealerHealth = maxDealerHealth
 	$DealerHealth.text = str("Health : ", dealerHealth)
 	$PlayerHealth.text = str("Health : ", playerHealth)
-	shells.push_back(true)
-	shells.push_back(false)
+	shells.push_back(ShellType.LIVE)
+	shells.push_back(ShellType.BLANK)
 	for n in randi_range(roundObject.min, roundObject.max) - 2:
-		shells.push_back(randi() % 2 == 0)
+		if randi() % 2 == 0:
+			shells.push_back(ShellType.LIVE)
+		else:
+			shells.push_back(ShellType.BLANK)
 	shells.shuffle()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -36,11 +39,11 @@ func _process(delta: float) -> void:
 func shoot(isPlayer: bool) -> void:
 	if (len(shells) > 0):
 		var current_shell = shells.pop_front()
-		if (current_shell):
+		if current_shell == ShellType.LIVE:
 			changeHealth(isPlayer, -1)
 
 func changeHealth(isPlayer: bool, delta: int) -> void:
-	if (isPlayer):
+	if isPlayer:
 		playerHealth = clampi(playerHealth + delta, 0, maxPlayerHealth)
 	else:
 		dealerHealth = clampi(dealerHealth + delta, 0, maxDealerHealth)
