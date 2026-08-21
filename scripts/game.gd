@@ -1,5 +1,7 @@
 extends Node2D
 
+var maxPlayerHealth = 0
+var maxDealerHealth = 0
 var dealerHealth = 0
 var playerHealth = 0
 var shells = []
@@ -13,11 +15,15 @@ var currentRound = 0
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var roundObject = roundsConfiguration[currentRound]
-	playerHealth = roundObject.health
-	dealerHealth = roundObject.health
+	maxPlayerHealth = roundObject.health
+	maxDealerHealth = roundObject.health
+	playerHealth = maxPlayerHealth
+	dealerHealth = maxDealerHealth
 	$DealerHealth.text = str("Health : ", dealerHealth)
 	$PlayerHealth.text = str("Health : ", playerHealth)
-	for n in randi_range(roundObject.min, roundObject.max):
+	shells.push_back(true)
+	shells.push_back(false)
+	for n in randi_range(roundObject.min, roundObject.max) - 2:
 		shells.push_back(randi() % 2 == 0)
 	shells.shuffle()
 
@@ -27,6 +33,14 @@ func _process(delta: float) -> void:
 		$PauseMenu.show()
 		get_tree().paused = true
 
+func changeHealth(player: bool, delta: int) -> void:
+	if (player):
+		playerHealth = clampi(playerHealth + delta, 0, maxPlayerHealth)
+	else:
+		dealerHealth = clampi(dealerHealth + delta, 0, maxDealerHealth)
+	$DealerHealth.text = str("Health : ", dealerHealth)
+	$PlayerHealth.text = str("Health : ", playerHealth)
+
 func _on_continue_pressed() -> void:
 	$PauseMenu.hide()
 	get_tree().paused = false
@@ -35,3 +49,15 @@ func _on_quit_pressed() -> void:
 	$PauseMenu.hide()
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+
+func _on_dealer_area_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	if event is InputEventMouseButton \
+	and event.button_index == MouseButton.MOUSE_BUTTON_LEFT \
+	and event.is_pressed():
+		changeHealth(false, -1)
+
+func _on_player_area_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	if event is InputEventMouseButton \
+	and event.button_index == MouseButton.MOUSE_BUTTON_LEFT \
+	and event.is_pressed():
+		changeHealth(true, -1)
