@@ -2,7 +2,7 @@ extends Sprite2D
 
 var type = ShellType.LIVE
 
-func setProperties(ty: ShellType) -> void:
+func setProperties(ty) -> void:
 	type = ty
 	if (type == ShellType.BLANK):
 		frame = 1

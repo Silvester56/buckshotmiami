@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c32ape7e3mj7m" path="res://scripts/game.gd" id="1_uwrxv"]
 [ext_resource type="Texture2D" uid="uid://o165bq440eek" path="res://assets/board.png" id="2_lbhrr"]
+[ext_resource type="PackedScene" uid="uid://hf54ee6dkta3" path="res://scenes/shell.tscn" id="2_p57ef"]
 [ext_resource type="Texture2D" uid="uid://c6rqfn13lc87v" path="res://assets/characters.png" id="2_yqjtg"]
 [ext_resource type="Theme" uid="uid://btfuk8lvwal51" path="res://themes/menu.tres" id="3_lnu2h"]
 [ext_resource type="Texture2D" uid="uid://bv7lhnjthidhe" path="res://assets/shotgun.png" id="4_iywne"]
@@ -11,6 +12,7 @@ size = Vector2(64, 64)
 
 [node name="Game" type="Node2D" unique_id=1685807169]
 script = ExtResource("1_uwrxv")
+Shell = ExtResource("2_p57ef")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1575029082]
 offset_right = 512.0
@@ -40,7 +42,14 @@ vframes = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/PlayerArea" unique_id=1713877533]
 shape = SubResource("RectangleShape2D_kmbhq")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1736833064]
+[node name="DisplayedShells" type="Node2D" parent="." unique_id=242926234]
+position = Vector2(256, 192)
+
+[node name="DisplayedShellsTimer" type="Timer" parent="." unique_id=128055691]
+wait_time = 3.0
+one_shot = true
+
+[node name="Shotgun" type="Sprite2D" parent="." unique_id=1736833064]
 position = Vector2(256, 256)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("4_iywne")
@@ -104,5 +113,6 @@ text = "quit"
 
 [connection signal="input_event" from="Dealer/DealerArea" to="." method="_on_dealer_area_input_event"]
 [connection signal="input_event" from="Player/PlayerArea" to="." method="_on_player_area_input_event"]
+[connection signal="timeout" from="DisplayedShellsTimer" to="." method="_on_displayed_shells_timer_timeout"]
 [connection signal="pressed" from="PauseMenu/Continue" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="PauseMenu/Quit" to="." method="_on_quit_pressed"]

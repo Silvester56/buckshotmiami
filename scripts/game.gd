@@ -1,5 +1,7 @@
 extends Node2D
 
+@export var Shell: PackedScene
+
 var maxPlayerHealth = 0
 var maxDealerHealth = 0
 var dealerHealth = 0
@@ -28,6 +30,7 @@ func _ready() -> void:
 			shells.push_back(ShellType.LIVE)
 		else:
 			shells.push_back(ShellType.BLANK)
+	displayShells()
 	shells.shuffle()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -35,6 +38,14 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("pause"):
 		$PauseMenu.show()
 		get_tree().paused = true
+
+func displayShells() -> void:
+	for index in len(shells):
+		var newShell = Shell.instantiate()
+		newShell.setProperties(shells[index])
+		newShell.position.x = index * 16
+		$DisplayedShells.add_child(newShell)
+	$DisplayedShellsTimer.start()
 
 func shoot(isPlayer: bool) -> void:
 	if (len(shells) > 0):
@@ -70,3 +81,7 @@ func _on_player_area_input_event(viewport: Node, event: InputEvent, shape_idx: i
 	and event.button_index == MouseButton.MOUSE_BUTTON_LEFT \
 	and event.is_pressed():
 		shoot(true)
+
+func _on_displayed_shells_timer_timeout() -> void:
+	for n in $DisplayedShells.get_children():
+		n.queue_free()
