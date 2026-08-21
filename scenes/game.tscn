@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://o165bq440eek" path="res://assets/board.png" id="2_lbhrr"]
 [ext_resource type="Texture2D" uid="uid://c6rqfn13lc87v" path="res://assets/characters.png" id="2_yqjtg"]
 [ext_resource type="Theme" uid="uid://btfuk8lvwal51" path="res://themes/menu.tres" id="3_lnu2h"]
+[ext_resource type="Texture2D" uid="uid://bv7lhnjthidhe" path="res://assets/shotgun.png" id="4_iywne"]
 
 [node name="Game" type="Node2D" unique_id=1685807169]
 script = ExtResource("1_uwrxv")
@@ -25,6 +26,11 @@ position = Vector2(256, 448)
 texture = ExtResource("2_yqjtg")
 hframes = 2
 vframes = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1736833064]
+position = Vector2(256, 256)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("4_iywne")
 
 [node name="DealerHealth" type="Label" parent="." unique_id=1369694520]
 offset_left = 256.0
