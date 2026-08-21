@@ -9,7 +9,6 @@ var listOfMasks = [
 	{"id": 3, "label": "Aubrey"},
 ]
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var newPositionY = 0;
 	for mask in listOfMasks:

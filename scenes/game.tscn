@@ -3,44 +3,19 @@
 [ext_resource type="Script" uid="uid://c32ape7e3mj7m" path="res://scripts/game.gd" id="1_uwrxv"]
 [ext_resource type="Texture2D" uid="uid://o165bq440eek" path="res://assets/board.png" id="2_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://hf54ee6dkta3" path="res://scenes/shell.tscn" id="2_p57ef"]
-[ext_resource type="Texture2D" uid="uid://c6rqfn13lc87v" path="res://assets/characters.png" id="2_yqjtg"]
 [ext_resource type="Theme" uid="uid://btfuk8lvwal51" path="res://themes/menu.tres" id="3_lnu2h"]
+[ext_resource type="PackedScene" uid="uid://djnx21025aqvh" path="res://scenes/character.tscn" id="3_u5sy4"]
 [ext_resource type="Texture2D" uid="uid://bv7lhnjthidhe" path="res://assets/shotgun.png" id="4_iywne"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_kmbhq"]
-size = Vector2(64, 64)
 
 [node name="Game" type="Node2D" unique_id=1685807169]
 script = ExtResource("1_uwrxv")
 Shell = ExtResource("2_p57ef")
+Character = ExtResource("3_u5sy4")
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=1575029082]
+[node name="Background" type="TextureRect" parent="." unique_id=1575029082]
 offset_right = 512.0
 offset_bottom = 512.0
 texture = ExtResource("2_lbhrr")
-
-[node name="Dealer" type="Sprite2D" parent="." unique_id=284995910]
-position = Vector2(256, 64)
-texture = ExtResource("2_yqjtg")
-hframes = 2
-vframes = 2
-frame = 2
-
-[node name="DealerArea" type="Area2D" parent="Dealer" unique_id=1665950072]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Dealer/DealerArea" unique_id=992491834]
-shape = SubResource("RectangleShape2D_kmbhq")
-
-[node name="Player" type="Sprite2D" parent="." unique_id=1626466857]
-position = Vector2(256, 448)
-texture = ExtResource("2_yqjtg")
-hframes = 2
-vframes = 2
-
-[node name="PlayerArea" type="Area2D" parent="Player" unique_id=1350302255]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/PlayerArea" unique_id=1713877533]
-shape = SubResource("RectangleShape2D_kmbhq")
 
 [node name="DisplayedShells" type="Node2D" parent="." unique_id=242926234]
 position = Vector2(256, 192)
@@ -53,17 +28,6 @@ one_shot = true
 position = Vector2(256, 256)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("4_iywne")
-
-[node name="DealerHealth" type="Label" parent="." unique_id=1369694520]
-offset_left = 256.0
-offset_right = 384.0
-offset_bottom = 32.0
-
-[node name="PlayerHealth" type="Label" parent="." unique_id=1298257559]
-offset_left = 256.0
-offset_top = 480.0
-offset_right = 384.0
-offset_bottom = 512.0
 
 [node name="PauseMenu" type="Control" parent="." unique_id=1186123291]
 process_mode = 2
@@ -111,8 +75,6 @@ grow_vertical = 2
 theme = ExtResource("3_lnu2h")
 text = "quit"
 
-[connection signal="input_event" from="Dealer/DealerArea" to="." method="_on_dealer_area_input_event"]
-[connection signal="input_event" from="Player/PlayerArea" to="." method="_on_player_area_input_event"]
 [connection signal="timeout" from="DisplayedShellsTimer" to="." method="_on_displayed_shells_timer_timeout"]
 [connection signal="pressed" from="PauseMenu/Continue" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="PauseMenu/Quit" to="." method="_on_quit_pressed"]
