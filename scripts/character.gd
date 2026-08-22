@@ -18,9 +18,11 @@ func setProperties(isPl, maxHe, posX, posY) -> void:
 	if isPlayer:
 		frame = 0
 		$Health.position.y = 40
+		$Hover.text = "YOU"
 	else:
 		frame = 2
 		$Health.position.y = -40
+		$Hover.text = "DEALER"
 
 func changeHealth(delta: int) -> void:
 	health = clampi(health + delta, 0, maxHealth)
@@ -43,3 +45,9 @@ func _on_character_area_input_event(viewport: Node, event: InputEvent, shape_idx
 	and event.button_index == MouseButton.MOUSE_BUTTON_LEFT \
 	and event.is_pressed():
 		emit_signal("character_click", isPlayer)
+
+func _on_character_area_mouse_entered() -> void:
+	$Hover.visible = true
+
+func _on_character_area_mouse_exited() -> void:
+	$Hover.visible = false
