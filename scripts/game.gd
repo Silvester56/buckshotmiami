@@ -91,15 +91,25 @@ func aimAndShoot(onPlayer: bool) -> void:
 func shoot(onPlayer: bool) -> void:
 	var currentShell = shells.pop_front()
 	var isBlank = currentShell == ShellType.BLANK
+	var playerIsDead
+	var dealerIsDead
 	if currentShell == ShellType.LIVE:
 		if onPlayer:
-			player.changeHealth(-1)
+			playerIsDead = player.changeHealth(-1)
 		else:
-			dealer.changeHealth(-1)
+			dealerIsDead = dealer.changeHealth(-1)
 	var newMovingShell = Shell.instantiate()
 	newMovingShell.setProperties(currentShell, true)
 	$ShellEjection.add_child(newMovingShell)
-	if (len(shells) == 0):
+	if playerIsDead:
+		await get_tree().create_timer(gameDelay).timeout
+		$GameOverScreen.show()
+		get_tree().paused = true
+	elif dealerIsDead:
+		await get_tree().create_timer(gameDelay).timeout
+		$WinScreen.show()
+		get_tree().paused = true
+	elif (len(shells) == 0):
 		isPlayerTurn = false
 		await get_tree().create_timer(gameDelay).timeout
 		shotgunReload()
@@ -115,6 +125,8 @@ func _on_continue_pressed() -> void:
 
 func _on_quit_pressed() -> void:
 	$PauseMenu.hide()
+	$GameOverScreen.hide()
+	$WinScreen.hide()
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 
