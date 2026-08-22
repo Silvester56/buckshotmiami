@@ -13,6 +13,8 @@ const roundsConfiguration = [
 	{ "id": 2, "health": 6, "min": 4, "max": 8, "objects": 4 },
 ]
 var currentRound = 0
+var shotgunRotation = 0
+var shotgunTarget = 0
 var isPlayerTurn = false
 
 func _ready() -> void:
@@ -30,6 +32,11 @@ func _ready() -> void:
 	shotgunReload()
 
 func _process(delta: float) -> void:
+	if shotgunRotation < shotgunTarget:
+		shotgunRotation = shotgunRotation + 1
+	if shotgunRotation > shotgunTarget:
+		shotgunRotation = shotgunRotation - 1
+	$Shotgun.rotation = deg_to_rad(shotgunRotation)
 	if Input.is_action_just_pressed("pause"):
 		$PauseMenu.show()
 		get_tree().paused = true
@@ -69,7 +76,17 @@ func nextTurn(playerTurn: bool) -> void:
 		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 		await get_tree().create_timer(gameDelay).timeout
 		var blankShells = shells.count(ShellType.BLANK)
-		shoot(blankShells < len(shells) - blankShells)
+		aimAndShoot(blankShells < len(shells) - blankShells)
+
+func aimAndShoot(onPlayer: bool) -> void:
+	if onPlayer:
+		shotgunTarget = 90
+	else:
+		shotgunTarget = -90
+	await get_tree().create_timer(gameDelay / 2).timeout
+	shoot(onPlayer)
+	await get_tree().create_timer(gameDelay / 2).timeout
+	shotgunTarget = 0
 
 func shoot(onPlayer: bool) -> void:
 	var currentShell = shells.pop_front()
@@ -103,4 +120,4 @@ func _on_quit_pressed() -> void:
 
 func _on_character_click(onPlayer: bool) -> void:
 	if isPlayerTurn:
-		shoot(onPlayer)
+		aimAndShoot(onPlayer)
