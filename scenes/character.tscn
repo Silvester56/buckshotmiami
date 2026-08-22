@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://c6rqfn13lc87v" path="res://assets/characters.png" id="1_agfs1"]
 [ext_resource type="Script" uid="uid://6qa7cywby3kd" path="res://scripts/character.gd" id="2_rkhd4"]
+[ext_resource type="PackedScene" uid="uid://b3tg3ebj4c2er" path="res://scenes/heart.tscn" id="3_lrhn5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lrhn5"]
 size = Vector2(64, 64)
@@ -11,15 +12,13 @@ texture = ExtResource("1_agfs1")
 hframes = 2
 vframes = 2
 script = ExtResource("2_rkhd4")
+Heart = ExtResource("3_lrhn5")
 
 [node name="CharacterArea" type="Area2D" parent="." unique_id=1239910085]
 
 [node name="CharacterCollision" type="CollisionShape2D" parent="CharacterArea" unique_id=2036352067]
 shape = SubResource("RectangleShape2D_lrhn5")
 
-[node name="Health" type="Label" parent="." unique_id=848445676]
-offset_left = 40.0
-offset_top = -32.0
-offset_right = 168.0
+[node name="Health" type="Node2D" parent="." unique_id=269845002]
 
 [connection signal="input_event" from="CharacterArea" to="." method="_on_character_area_input_event"]
