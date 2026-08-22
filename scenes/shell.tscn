@@ -8,3 +8,9 @@ scale = Vector2(0.05, 0.05)
 texture = ExtResource("1_sb42f")
 hframes = 4
 script = ExtResource("2_6fq18")
+
+[node name="EjectionTimer" type="Timer" parent="." unique_id=50511025]
+wait_time = 0.25
+one_shot = true
+
+[connection signal="timeout" from="EjectionTimer" to="." method="_on_ejection_timer_timeout"]

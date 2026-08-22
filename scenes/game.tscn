@@ -29,6 +29,9 @@ position = Vector2(256, 256)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("4_iywne")
 
+[node name="ShellEjection" type="Node2D" parent="." unique_id=250614007]
+position = Vector2(256, 256)
+
 [node name="PauseMenu" type="Control" parent="." unique_id=1186123291]
 process_mode = 2
 visible = false

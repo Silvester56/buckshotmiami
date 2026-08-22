@@ -55,6 +55,9 @@ func shoot(isPlayer: bool) -> void:
 				player.changeHealth(-1)
 			else:
 				dealer.changeHealth(-1)
+		var newMovingShell = Shell.instantiate()
+		newMovingShell.setProperties(current_shell, true)
+		$ShellEjection.add_child(newMovingShell)
 
 func _on_continue_pressed() -> void:
 	$PauseMenu.hide()
