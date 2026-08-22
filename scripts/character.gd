@@ -25,6 +25,11 @@ func setProperties(isPl, maxHe, posX, posY) -> void:
 		$Health.position.y = -40
 		$Hover.text = "DEALER"
 
+func resetHealth(newValue: int) -> void:
+	maxHealth = newValue
+	health = maxHealth
+	drawHealth()
+
 func changeHealth(delta: int) -> bool:
 	health = clampi(health + delta, 0, maxHealth)
 	drawHealth()

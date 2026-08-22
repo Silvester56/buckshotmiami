@@ -41,6 +41,23 @@ func _process(delta: float) -> void:
 		$PauseMenu.show()
 		get_tree().paused = true
 
+func initRound() -> void:
+	var roundObject = roundsConfiguration[currentRound]
+	player.resetHealth(roundObject.health)
+	dealer.resetHealth(roundObject.health)
+	shotgunReload()
+
+func nextRound() -> void:
+	var roundObject = roundsConfiguration[currentRound]
+	player.setIsHoverTextVisible(isPlayerTurn)
+	dealer.setIsHoverTextVisible(isPlayerTurn)
+	if roundObject.id == 2:
+		$WinScreen.show()
+		get_tree().paused = true
+	else:
+		currentRound = currentRound + 1
+		initRound()
+
 func displayShellsAndThenHideThem() -> void:
 	for index in len(shells):
 		var newShell = Shell.instantiate()
@@ -106,9 +123,9 @@ func shoot(onPlayer: bool) -> void:
 		$GameOverScreen.show()
 		get_tree().paused = true
 	elif dealerIsDead:
+		isPlayerTurn = false
 		await get_tree().create_timer(gameDelay).timeout
-		$WinScreen.show()
-		get_tree().paused = true
+		nextRound()
 	elif (len(shells) == 0):
 		isPlayerTurn = false
 		await get_tree().create_timer(gameDelay).timeout
