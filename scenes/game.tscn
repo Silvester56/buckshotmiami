@@ -20,10 +20,6 @@ texture = ExtResource("2_lbhrr")
 [node name="DisplayedShells" type="Node2D" parent="." unique_id=242926234]
 position = Vector2(256, 192)
 
-[node name="DisplayedShellsTimer" type="Timer" parent="." unique_id=128055691]
-wait_time = 3.0
-one_shot = true
-
 [node name="Shotgun" type="Sprite2D" parent="." unique_id=1736833064]
 position = Vector2(256, 256)
 scale = Vector2(0.3, 0.3)
@@ -78,6 +74,5 @@ grow_vertical = 2
 theme = ExtResource("3_lnu2h")
 text = "quit"
 
-[connection signal="timeout" from="DisplayedShellsTimer" to="." method="_on_displayed_shells_timer_timeout"]
 [connection signal="pressed" from="PauseMenu/Continue" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="PauseMenu/Quit" to="." method="_on_quit_pressed"]
