@@ -21,7 +21,7 @@ shape = SubResource("RectangleShape2D_lrhn5")
 
 [node name="Health" type="Node2D" parent="." unique_id=269845002]
 
-[node name="Hover" type="Label" parent="." unique_id=662514721]
+[node name="HoverLabel" type="Label" parent="." unique_id=662514721]
 visible = false
 anchors_preset = 8
 anchor_left = 0.5

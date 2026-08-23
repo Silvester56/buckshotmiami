@@ -30,7 +30,7 @@ func _ready() -> void:
 	dealer.setProperties(false, roundObject.health, 256, distanceFromBorder)
 	dealer.character_click.connect(_on_character_click)
 	dialog = Dialog.instantiate()
-	dialog.setProperties(256, 412, 1)
+	dialog.setProperties(256, 384, 1)
 	$Background.add_sibling(player)
 	$Background.add_sibling(dealer)
 	$Background.add_sibling(dialog)

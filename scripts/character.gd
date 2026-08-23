@@ -17,13 +17,12 @@ func setProperties(isPl, maxHe, posX, posY) -> void:
 	position.y = posY
 	drawHealth()
 	if isPlayer:
-		frame = 0
-		$Health.position.y = 40
-		$Hover.text = "YOU"
-	else:
 		frame = 2
+		$Health.position.y = 40
+		$HoverLabel.text = "YOU"
+	else:
 		$Health.position.y = -40
-		$Hover.text = "DEALER"
+		$HoverLabel.text = "DEALER"
 
 func resetHealth(newValue: int) -> void:
 	maxHealth = newValue
@@ -50,7 +49,8 @@ func drawHealth() -> void:
 func setIsHoverTextVisible(newVal: bool) -> void:
 	isHoverTextVisible = newVal
 	if not newVal:
-		$Hover.visible = false
+		self_modulate = Color.WHITE
+		$HoverLabel.hide()
 
 func _on_character_area_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton \
@@ -60,7 +60,9 @@ func _on_character_area_input_event(viewport: Node, event: InputEvent, shape_idx
 
 func _on_character_area_mouse_entered() -> void:
 	if isHoverTextVisible:
-		$Hover.visible = true
+		self_modulate = Color.BLACK
+		$HoverLabel.show()
 
 func _on_character_area_mouse_exited() -> void:
-	$Hover.visible = false
+	self_modulate = Color.WHITE
+	$HoverLabel.hide()
