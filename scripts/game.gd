@@ -34,6 +34,7 @@ func _ready() -> void:
 	$Background.add_sibling(player)
 	$Background.add_sibling(dealer)
 	$Background.add_sibling(dialog)
+	await get_tree().create_timer(gameDelay).timeout
 	shotgunReload()
 
 func _process(delta: float) -> void:
@@ -63,15 +64,31 @@ func nextRound() -> void:
 		currentRound = currentRound + 1
 		initRound()
 
+func getCountingText() -> String:
+	var blankShells = shells.count(ShellType.BLANK)
+	var liveShells = len(shells) - blankShells
+	var blankText = " blanks." if blankShells > 1 else " blank."
+	var liveText = " live rounds." if liveShells > 1 else " live round."
+	return str(liveShells, liveText, blankShells, blankText)
+
+func getShufflingText() -> String:
+	const lines = [
+		"I insert the shells in an unknown order.",
+		"They enter the chamber in a hidden sequence.",
+		"The shells are loaded randomly."
+	]
+	return lines[randi_range(0, len(lines) - 1)]
+
 func displayShellsAndThenHideThem() -> void:
 	for index in len(shells):
 		var newShell = Shell.instantiate()
 		newShell.setProperties(shells[index])
 		newShell.position.x = index * 16
 		$DisplayedShells.add_child(newShell)
-	await get_tree().create_timer(gameDelay).timeout
+	await dialog.display(getCountingText())
 	for n in $DisplayedShells.get_children():
 		n.queue_free()
+	await dialog.display(getShufflingText())
 	shells.shuffle()
 	nextTurn(true)
 

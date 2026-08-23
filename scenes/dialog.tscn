@@ -5,7 +5,7 @@
 
 [sub_resource type="Theme" id="Theme_36pgd"]
 default_font = ExtResource("1_pkx4w")
-default_font_size = 12
+default_font_size = 10
 
 [node name="Dialog" type="Control" unique_id=506862285]
 visible = false
