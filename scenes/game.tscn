@@ -6,11 +6,13 @@
 [ext_resource type="Theme" uid="uid://btfuk8lvwal51" path="res://themes/menu.tres" id="3_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://djnx21025aqvh" path="res://scenes/character.tscn" id="3_u5sy4"]
 [ext_resource type="Texture2D" uid="uid://bv7lhnjthidhe" path="res://assets/shotgun.png" id="4_iywne"]
+[ext_resource type="PackedScene" uid="uid://b0u0pkmflawqy" path="res://scenes/dialog.tscn" id="4_u5sy4"]
 
 [node name="Game" type="Node2D" unique_id=1685807169]
 script = ExtResource("1_uwrxv")
 Shell = ExtResource("2_p57ef")
 Character = ExtResource("3_u5sy4")
+Dialog = ExtResource("4_u5sy4")
 
 [node name="Background" type="TextureRect" parent="." unique_id=1575029082]
 offset_right = 512.0

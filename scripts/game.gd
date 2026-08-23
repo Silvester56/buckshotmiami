@@ -2,9 +2,11 @@ extends Node2D
 
 @export var Shell: PackedScene
 @export var Character: PackedScene
+@export var Dialog: PackedScene
 
 var dealer
 var player
+var dialog
 var shells = []
 const gameDelay = 3
 const roundsConfiguration = [
@@ -27,8 +29,11 @@ func _ready() -> void:
 	dealer = Character.instantiate()
 	dealer.setProperties(false, roundObject.health, 256, distanceFromBorder)
 	dealer.character_click.connect(_on_character_click)
+	dialog = Dialog.instantiate()
+	dialog.setProperties(256, 412, 1)
 	$Background.add_sibling(player)
 	$Background.add_sibling(dealer)
+	$Background.add_sibling(dialog)
 	shotgunReload()
 
 func _process(delta: float) -> void:

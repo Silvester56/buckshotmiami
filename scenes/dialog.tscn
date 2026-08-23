@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://b0u0pkmflawqy"]
+
+[ext_resource type="Script" uid="uid://cwcj431bdsbf0" path="res://scripts/dialog.gd" id="1_36pgd"]
+[ext_resource type="FontFile" uid="uid://qcuxsto6v25d" path="res://assets/dogicabold.ttf" id="1_pkx4w"]
+
+[sub_resource type="Theme" id="Theme_36pgd"]
+default_font = ExtResource("1_pkx4w")
+default_font_size = 12
+
+[node name="Dialog" type="Control" unique_id=506862285]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_36pgd")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1801997213]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -32.0
+offset_right = 128.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="." unique_id=614258794]
+custom_maximum_size = Vector2(256, 64)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -32.0
+offset_right = 128.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_36pgd")
+text = "1 BLANK 2 LIVES"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+uppercase = true
