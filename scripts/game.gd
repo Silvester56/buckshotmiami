@@ -10,6 +10,7 @@ var dialog
 var shells = []
 var gameSpeed: float
 var gameDelay: float
+var lastMouseMode
 const roundsConfiguration = [
 	{ "id": 0, "health": 2, "min": 2, "max": 4, "objects": 0 },
 	{ "id": 1, "health": 4, "min": 3, "max": 6, "objects": 2 },
@@ -21,7 +22,7 @@ var shotgunTarget: float = 0
 var isPlayerTurn = false
 
 func _ready() -> void:
-	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+	changeMouseDisplay(Global.MouseOption.CAPTURED)
 	var roundObject = roundsConfiguration[currentRound]
 	var distanceFromBorder = 50
 	gameSpeed = 1
@@ -49,6 +50,17 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("pause"):
 		$PauseMenu.show()
 		get_tree().paused = true
+		changeMouseDisplay(Global.MouseOption.VISIBLE)
+
+func changeMouseDisplay(option: Global.MouseOption) -> void:
+	if option == Global.MouseOption.VISIBLE:
+		lastMouseMode = Input.get_mouse_mode()
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	elif option == Global.MouseOption.CAPTURED:
+		lastMouseMode = Input.get_mouse_mode()
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	else:
+		Input.set_mouse_mode(lastMouseMode)
 
 func initRound() -> void:
 	var roundObject = roundsConfiguration[currentRound]
@@ -63,6 +75,7 @@ func nextRound() -> void:
 	if roundObject.id == 2:
 		$WinScreen.show()
 		get_tree().paused = true
+		changeMouseDisplay(Global.MouseOption.VISIBLE)
 	else:
 		currentRound = currentRound + 1
 		initRound()
@@ -112,10 +125,11 @@ func nextTurn(playerTurn: bool) -> void:
 	isPlayerTurn = playerTurn
 	player.setIsHoverTextVisible(isPlayerTurn)
 	dealer.setIsHoverTextVisible(isPlayerTurn)
+
 	if isPlayerTurn:
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		changeMouseDisplay(Global.MouseOption.VISIBLE)
 	else:
-		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+		changeMouseDisplay(Global.MouseOption.CAPTURED)
 		await get_tree().create_timer(gameDelay).timeout
 		var blankShells = shells.count(Global.ShellType.BLANK)
 		aimAndShoot(blankShells < len(shells) - blankShells)
@@ -147,6 +161,7 @@ func shoot(onPlayer: bool) -> void:
 		await get_tree().create_timer(gameDelay).timeout
 		$GameOverScreen.show()
 		get_tree().paused = true
+		changeMouseDisplay(Global.MouseOption.VISIBLE)
 	elif dealerIsDead:
 		isPlayerTurn = false
 		await get_tree().create_timer(gameDelay).timeout
@@ -164,6 +179,7 @@ func shoot(onPlayer: bool) -> void:
 func _on_continue_pressed() -> void:
 	$PauseMenu.hide()
 	get_tree().paused = false
+	changeMouseDisplay(Global.MouseOption.LAST_MODE)
 
 func _on_quit_pressed() -> void:
 	$PauseMenu.hide()
