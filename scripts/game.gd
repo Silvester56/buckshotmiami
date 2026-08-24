@@ -68,7 +68,7 @@ func nextRound() -> void:
 		initRound()
 
 func getCountingText() -> String:
-	var blankShells = shells.count(ShellType.BLANK)
+	var blankShells = shells.count(Global.ShellType.BLANK)
 	var liveShells = len(shells) - blankShells
 	var blankText = " blanks." if blankShells > 1 else " blank."
 	var liveText = " live rounds." if liveShells > 1 else " live round."
@@ -99,13 +99,13 @@ func shotgunReload() -> void:
 	var roundObject = roundsConfiguration[currentRound]
 	for n in $ShellEjection.get_children():
 		n.queue_free()
-	shells.push_back(ShellType.LIVE)
-	shells.push_back(ShellType.BLANK)
+	shells.push_back(Global.ShellType.LIVE)
+	shells.push_back(Global.ShellType.BLANK)
 	for n in randi_range(roundObject.min, roundObject.max) - 2:
 		if randi() % 2 == 0:
-			shells.push_back(ShellType.LIVE)
+			shells.push_back(Global.ShellType.LIVE)
 		else:
-			shells.push_back(ShellType.BLANK)
+			shells.push_back(Global.ShellType.BLANK)
 	displayShellsAndThenHideThem()
 
 func nextTurn(playerTurn: bool) -> void:
@@ -117,7 +117,7 @@ func nextTurn(playerTurn: bool) -> void:
 	else:
 		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 		await get_tree().create_timer(gameDelay).timeout
-		var blankShells = shells.count(ShellType.BLANK)
+		var blankShells = shells.count(Global.ShellType.BLANK)
 		aimAndShoot(blankShells < len(shells) - blankShells)
 
 func aimAndShoot(onPlayer: bool) -> void:
@@ -132,10 +132,10 @@ func aimAndShoot(onPlayer: bool) -> void:
 
 func shoot(onPlayer: bool) -> void:
 	var currentShell = shells.pop_front()
-	var isBlank = currentShell == ShellType.BLANK
+	var isBlank = currentShell == Global.ShellType.BLANK
 	var playerIsDead
 	var dealerIsDead
-	if currentShell == ShellType.LIVE:
+	if currentShell == Global.ShellType.LIVE:
 		if onPlayer:
 			playerIsDead = player.changeHealth(-1)
 		else:

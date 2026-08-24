@@ -1,6 +1,6 @@
 extends Sprite2D
 
-var type = ShellType.LIVE
+var type = Global.ShellType.LIVE
 var moving = false
 var speed = 500
 var angle = randi_range(0, 359)
@@ -13,17 +13,17 @@ func _physics_process(_delta: float) -> void:
 
 func setProperties(ty, isEjected = false) -> void:
 	type = ty
-	if type == ShellType.BLANK:
+	if type == Global.ShellType.BLANK:
 		frame = 1
-	if type == ShellType.LETHAL:
+	if type == Global.ShellType.LETHAL:
 		frame = 2
-	if type == ShellType.HEAL:
+	if type == Global.ShellType.HEAL:
 		frame = 3
 	moving = isEjected
 	if moving:
 		$EjectionTimer.autostart = true
 
-func getType() -> ShellType:
+func getType() -> Global.ShellType:
 	return type
 
 func _on_ejection_timer_timeout() -> void:
