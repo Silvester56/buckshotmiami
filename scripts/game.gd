@@ -8,21 +8,24 @@ var dealer
 var player
 var dialog
 var shells = []
-const gameDelay = 3
+var gameSpeed: float
+var gameDelay: float
 const roundsConfiguration = [
 	{ "id": 0, "health": 2, "min": 2, "max": 4, "objects": 0 },
 	{ "id": 1, "health": 4, "min": 3, "max": 6, "objects": 2 },
 	{ "id": 2, "health": 6, "min": 4, "max": 8, "objects": 4 },
 ]
 var currentRound = 0
-var shotgunRotation = 0
-var shotgunTarget = 0
+var shotgunRotation: float = 0
+var shotgunTarget: float = 0
 var isPlayerTurn = false
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	var roundObject = roundsConfiguration[currentRound]
 	var distanceFromBorder = 50
+	gameSpeed = 1
+	gameDelay = 3 / gameSpeed
 	player = Character.instantiate()
 	player.setProperties(true, roundObject.health, 256, 512 - distanceFromBorder)
 	player.character_click.connect(_on_character_click)
@@ -30,7 +33,7 @@ func _ready() -> void:
 	dealer.setProperties(false, roundObject.health, 256, distanceFromBorder)
 	dealer.character_click.connect(_on_character_click)
 	dialog = Dialog.instantiate()
-	dialog.setProperties(256, 384, 1)
+	dialog.setProperties(256, 384, 1 / gameSpeed)
 	$Background.add_sibling(player)
 	$Background.add_sibling(dealer)
 	$Background.add_sibling(dialog)
@@ -39,9 +42,9 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if shotgunRotation < shotgunTarget:
-		shotgunRotation = shotgunRotation + 1
+		shotgunRotation = shotgunRotation + gameSpeed
 	if shotgunRotation > shotgunTarget:
-		shotgunRotation = shotgunRotation - 1
+		shotgunRotation = shotgunRotation - gameSpeed
 	$Shotgun.rotation = deg_to_rad(shotgunRotation)
 	if Input.is_action_just_pressed("pause"):
 		$PauseMenu.show()
