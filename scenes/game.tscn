@@ -183,6 +183,7 @@ grow_vertical = 2
 theme = ExtResource("3_lnu2h")
 text = "quit"
 
+[connection signal="click" from="Shotgun" to="." method="_on_shotgun_click"]
 [connection signal="mouse_enter" from="Shotgun" to="." method="_on_shotgun_mouse_enter"]
 [connection signal="mouse_leave" from="Shotgun" to="." method="_on_shotgun_mouse_leave"]
 [connection signal="pressed" from="PauseMenu/Continue" to="." method="_on_continue_pressed"]

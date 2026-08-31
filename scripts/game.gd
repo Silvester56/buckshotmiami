@@ -71,8 +71,6 @@ func initRound() -> void:
 
 func nextRound() -> void:
 	var roundObject = roundsConfiguration[currentRound]
-	player.setIsHoverTextVisible(isPlayerTurn)
-	dealer.setIsHoverTextVisible(isPlayerTurn)
 	if roundObject.id == 2:
 		$WinScreen.show()
 		get_tree().paused = true
@@ -124,10 +122,8 @@ func shotgunReload() -> void:
 
 func nextTurn(playerTurn: bool) -> void:
 	isPlayerTurn = playerTurn
-	player.setIsHoverTextVisible(isPlayerTurn)
-	dealer.setIsHoverTextVisible(isPlayerTurn)
-
 	if isPlayerTurn:
+		$Shotgun.setIsActive(true)
 		changeMouseDisplay(Global.MouseOption.VISIBLE)
 	else:
 		changeMouseDisplay(Global.MouseOption.CAPTURED)
@@ -136,6 +132,7 @@ func nextTurn(playerTurn: bool) -> void:
 		aimAndShoot(blankShells < len(shells) - blankShells)
 
 func aimAndShoot(onPlayer: bool) -> void:
+	$Shotgun.setIsActive(false)
 	if onPlayer:
 		shotgunTarget = 90
 	else:
@@ -200,6 +197,8 @@ func _on_quit_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 
 func _on_character_click(onPlayer: bool) -> void:
+	player.setIsActive(false)
+	dealer.setIsActive(false)
 	if isPlayerTurn:
 		aimAndShoot(onPlayer)
 
@@ -208,3 +207,9 @@ func _on_shotgun_mouse_enter(t, d) -> void:
 
 func _on_shotgun_mouse_leave() -> void:
 	toggleHoverTexts("", "")
+
+func _on_shotgun_click() -> void:
+	toggleHoverTexts("", "")
+	$Shotgun.setIsActive(false)
+	player.setIsActive(true)
+	dealer.setIsActive(true)

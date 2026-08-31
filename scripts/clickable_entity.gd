@@ -8,15 +8,21 @@ signal mouse_leave
 
 @export var title: String
 @export var description: String
+var isActive: bool = false
+
+func setIsActive(newVal: bool) -> void:
+	isActive = newVal
 
 func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-	if event is InputEventMouseButton \
+	if isActive and event is InputEventMouseButton \
 	and event.button_index == MouseButton.MOUSE_BUTTON_LEFT \
 	and event.is_pressed():
 		emit_signal("click")
 
 func _on_area_2d_mouse_entered() -> void:
-	emit_signal("mouse_enter", title, description)
+	if isActive:
+		emit_signal("mouse_enter", title, description)
 
 func _on_area_2d_mouse_exited() -> void:
-	emit_signal("mouse_leave")
+	if isActive:
+		emit_signal("mouse_leave")

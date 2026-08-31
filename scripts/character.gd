@@ -7,7 +7,7 @@ signal character_click
 var maxHealth: int
 var health: int
 var isPlayer: bool
-var isHoverTextVisible: bool = false
+var isActive: bool = false
 
 func setProperties(isPl, maxHe, posX, posY) -> void:
 	isPlayer = isPl
@@ -46,20 +46,20 @@ func drawHealth() -> void:
 		newHeart.position.x = (maxHealth - n - 1) * 16
 		$Health.add_child(newHeart)
 
-func setIsHoverTextVisible(newVal: bool) -> void:
-	isHoverTextVisible = newVal
+func setIsActive(newVal: bool) -> void:
+	isActive = newVal
 	if not newVal:
 		self_modulate = Color.WHITE
 		$HoverLabel.hide()
 
 func _on_character_area_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-	if event is InputEventMouseButton \
+	if isActive and event is InputEventMouseButton \
 	and event.button_index == MouseButton.MOUSE_BUTTON_LEFT \
 	and event.is_pressed():
 		emit_signal("character_click", isPlayer)
 
 func _on_character_area_mouse_entered() -> void:
-	if isHoverTextVisible:
+	if isActive:
 		self_modulate = Color.BLACK
 		$HoverLabel.show()
 
