@@ -1,0 +1,7 @@
+[gd_resource type="Theme" format=3 uid="uid://w7dwr6tx8ole"]
+
+[ext_resource type="FontFile" uid="uid://qcuxsto6v25d" path="res://assets/dogicabold.ttf" id="1_3uhex"]
+
+[resource]
+default_font = ExtResource("1_3uhex")
+default_font_size = 10

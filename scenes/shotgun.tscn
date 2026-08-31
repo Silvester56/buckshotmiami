@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://c55rq1a3yhch1"]
+
+[ext_resource type="Texture2D" uid="uid://bv7lhnjthidhe" path="res://assets/shotgun.png" id="1_gnj2g"]
+[ext_resource type="Script" uid="uid://cokrg27eget04" path="res://scripts/clickable_entity.gd" id="1_voyse"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dygff"]
+size = Vector2(456, 112)
+
+[node name="Shotgun" type="Sprite2D" unique_id=465283673]
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("1_gnj2g")
+script = ExtResource("1_voyse")
+title = "Shotgun"
+description = "Shooting yourself with a blank skips the Dealer's turn."
+metadata/_custom_type_script = "uid://cokrg27eget04"
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1737323400]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=69337282]
+shape = SubResource("RectangleShape2D_dygff")
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

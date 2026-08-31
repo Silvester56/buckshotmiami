@@ -17,6 +17,7 @@ const roundsConfiguration = [
 	{ "id": 2, "health": 6, "min": 4, "max": 8, "objects": 4 },
 ]
 var currentRound = 0
+var shotgun
 var shotgunRotation: float = 0
 var shotgunTarget: float = 0
 var isPlayerTurn = false
@@ -176,6 +177,16 @@ func shoot(onPlayer: bool) -> void:
 		else:
 			nextTurn(not isBlank or onPlayer)
 
+func toggleHoverTexts(title, description) -> void:
+	if len(title) > 0 and len(description) > 0:
+		$HoverTitle.text = title
+		$HoverDescription.text = description
+		$HoverTitle.show()
+		$HoverDescription.show()
+	else:
+		$HoverTitle.hide()
+		$HoverDescription.hide()
+
 func _on_continue_pressed() -> void:
 	$PauseMenu.hide()
 	get_tree().paused = false
@@ -191,3 +202,9 @@ func _on_quit_pressed() -> void:
 func _on_character_click(onPlayer: bool) -> void:
 	if isPlayerTurn:
 		aimAndShoot(onPlayer)
+
+func _on_shotgun_mouse_enter(t, d) -> void:
+	toggleHoverTexts(t, d)
+
+func _on_shotgun_mouse_leave() -> void:
+	toggleHoverTexts("", "")
