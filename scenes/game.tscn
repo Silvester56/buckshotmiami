@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://djnx21025aqvh" path="res://scenes/character.tscn" id="3_u5sy4"]
 [ext_resource type="Texture2D" uid="uid://bv7lhnjthidhe" path="res://assets/shotgun.png" id="4_iywne"]
 [ext_resource type="PackedScene" uid="uid://b0u0pkmflawqy" path="res://scenes/dialog.tscn" id="4_u5sy4"]
+[ext_resource type="Script" uid="uid://cokrg27eget04" path="res://scripts/clickable_entity.gd" id="7_gee14"]
 
 [node name="Game" type="Node2D" unique_id=1685807169]
 script = ExtResource("1_uwrxv")
@@ -22,10 +23,14 @@ texture = ExtResource("2_lbhrr")
 [node name="DisplayedShells" type="Node2D" parent="." unique_id=242926234]
 position = Vector2(256, 192)
 
-[node name="Shotgun" type="Sprite2D" parent="." unique_id=1736833064]
+[node name="Shotgun" type="Sprite2D" parent="." unique_id=2016189489]
 position = Vector2(256, 256)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("4_iywne")
+script = ExtResource("7_gee14")
+title = "Shotgun"
+description = "Shooting yourself with a blank skips the Dealer's turn."
+metadata/_custom_type_script = "uid://cokrg27eget04"
 
 [node name="ShellEjection" type="Node2D" parent="." unique_id=250614007]
 position = Vector2(256, 256)

@@ -2,5 +2,5 @@ extends Sprite2D
 
 class_name ClickableEntity
 
-var title: String
-var description: String
+@export var title: String
+@export var description: String
