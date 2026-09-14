@@ -1,16 +1,16 @@
 [gd_scene format=3 uid="uid://b00qtxt8idhaw"]
 
 [ext_resource type="Texture2D" uid="uid://hyow5f785uff" path="res://assets/items.png" id="1_s8enn"]
-[ext_resource type="Script" uid="uid://cokrg27eget04" path="res://scripts/clickable_entity.gd" id="2_6muww"]
+[ext_resource type="Script" uid="uid://do33nmvh5ehbq" path="res://scripts/item.gd" id="2_s8enn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vljjh"]
-size = Vector2(456, 112)
+size = Vector2(32, 32)
 
 [node name="Item" type="Sprite2D" unique_id=1442123058]
 texture = ExtResource("1_s8enn")
 hframes = 3
 vframes = 3
-script = ExtResource("2_6muww")
+script = ExtResource("2_s8enn")
 metadata/_custom_type_script = "uid://cokrg27eget04"
 
 [node name="Area2D" type="Area2D" parent="." unique_id=257227483]

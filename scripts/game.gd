@@ -2,6 +2,7 @@ extends Node2D
 
 @export var Shell: PackedScene
 @export var Character: PackedScene
+@export var Item: PackedScene
 @export var Dialog: PackedScene
 
 var dealer
@@ -12,15 +13,17 @@ var gameSpeed: float
 var gameDelay: float
 var lastMouseMode
 const roundsConfiguration = [
-	{ "id": 0, "health": 2, "min": 2, "max": 4, "objects": 0 },
-	{ "id": 1, "health": 4, "min": 3, "max": 6, "objects": 2 },
-	{ "id": 2, "health": 6, "min": 4, "max": 8, "objects": 4 },
+	{ "id": 0, "health": 2, "min": 2, "max": 4, "items": 0 },
+	{ "id": 1, "health": 4, "min": 3, "max": 6, "items": 2 },
+	{ "id": 2, "health": 6, "min": 4, "max": 8, "items": 4 },
 ]
 var currentRound = 0
 var shotgun
 var shotgunRotation: float = 0
 var shotgunTarget: float = 0
 var isPlayerTurn = false
+var playerItemSlots
+var dealerItemSlots
 
 func _ready() -> void:
 	changeMouseDisplay(Global.MouseOption.CAPTURED)
@@ -39,8 +42,9 @@ func _ready() -> void:
 	$Background.add_sibling(player)
 	$Background.add_sibling(dealer)
 	$Background.add_sibling(dialog)
-	await get_tree().create_timer(gameDelay).timeout
-	shotgunReload()
+	playerItemSlots = getItemSlotsConfiguration(64, 386, 64, 8)
+	dealerItemSlots = getItemSlotsConfiguration(64, 64, 64, 8)
+	initRound()
 
 func _process(delta: float) -> void:
 	if shotgunRotation < shotgunTarget:
@@ -63,10 +67,45 @@ func changeMouseDisplay(option: Global.MouseOption) -> void:
 	else:
 		Input.set_mouse_mode(lastMouseMode)
 
+func getItemSlotsConfiguration(startX, startY, item_gap, number) -> Array:
+	var result = []
+	var newPosX = 0
+	var newGroupX = 0
+	for index in number:
+		if (index / 2) % 2 == 0:
+			newGroupX = startX
+		else:
+			newGroupX = 512 - startX - item_gap
+		newPosX = newGroupX + (index % 2) * item_gap
+		result.push_back({"occupied": false, "posX": newPosX, "posY": startY + (index / 4 * item_gap) })
+	return result
+
+func tryPlacingNewItem(imposedType, isPlayer) -> bool:
+	var item
+	var itemSlots = dealerItemSlots
+	if isPlayer:
+		itemSlots = playerItemSlots
+	for itemIndex in len(itemSlots):
+		if itemSlots[itemIndex].occupied:
+			pass
+		else:
+			item = Item.instantiate()
+			item.setProperties(null, itemSlots[itemIndex].posX, itemSlots[itemIndex].posY)
+			if isPlayer:
+				item.mouse_enter.connect(_on_item_mouse_enter)
+				item.mouse_leave.connect(_on_item_mouse_leave)
+			$Background.add_sibling(item)
+			itemSlots[itemIndex].occupied = true
+			return true
+	return false
+
 func initRound() -> void:
 	var roundObject = roundsConfiguration[currentRound]
 	player.resetHealth(roundObject.health)
 	dealer.resetHealth(roundObject.health)
+	for itemIndex in roundObject.items:
+		tryPlacingNewItem(null, true)
+		tryPlacingNewItem(null, false)
 	shotgunReload()
 
 func nextRound() -> void:
@@ -202,10 +241,10 @@ func _on_character_click(onPlayer: bool) -> void:
 	if isPlayerTurn:
 		aimAndShoot(onPlayer)
 
-func _on_shotgun_mouse_enter(t, d) -> void:
+func _on_item_mouse_enter(t, d) -> void:
 	toggleHoverTexts(t, d)
 
-func _on_shotgun_mouse_leave() -> void:
+func _on_item_mouse_leave() -> void:
 	toggleHoverTexts("", "")
 
 func _on_shotgun_click() -> void:
