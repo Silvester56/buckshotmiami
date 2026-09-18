@@ -21,7 +21,10 @@ var currentRound = 0
 var shotgun
 var shotgunRotation: float = 0
 var shotgunTarget: float = 0
-var isPlayerTurn = false
+var shotgunBaseDamage: int = 1
+var shotgunDamage: int = shotgunBaseDamage
+var isPlayerTurn: bool = false
+var isDealerTurnBlocked: bool = false
 var playerItemSlots
 var dealerItemSlots
 
@@ -52,7 +55,7 @@ func _process(delta: float) -> void:
 	if shotgunRotation > shotgunTarget:
 		shotgunRotation = shotgunRotation - gameSpeed
 	$Shotgun.rotation = deg_to_rad(shotgunRotation)
-	if Input.is_action_just_pressed("pause"):
+	if Input.is_action_just_pressed("pause") and Input.get_mouse_mode() == Input.MOUSE_MODE_VISIBLE:
 		$PauseMenu.show()
 		get_tree().paused = true
 		changeMouseDisplay(Global.MouseOption.VISIBLE)
@@ -94,6 +97,7 @@ func tryPlacingNewItem(imposedType, isPlayer) -> bool:
 			if isPlayer:
 				item.mouse_enter.connect(_on_item_mouse_enter)
 				item.mouse_leave.connect(_on_item_mouse_leave)
+				item.click.connect(_on_item_click)
 			$Background.add_sibling(item)
 			itemSlots[itemIndex].occupied = true
 			return true
@@ -150,6 +154,7 @@ func shotgunReload() -> void:
 	var roundObject = roundsConfiguration[currentRound]
 	for n in $ShellEjection.get_children():
 		n.queue_free()
+	shells = []
 	shells.push_back(Global.ShellType.LIVE)
 	shells.push_back(Global.ShellType.BLANK)
 	for n in randi_range(roundObject.min, roundObject.max) - 2:
@@ -165,10 +170,14 @@ func nextTurn(playerTurn: bool) -> void:
 		$Shotgun.setIsActive(true)
 		changeMouseDisplay(Global.MouseOption.VISIBLE)
 	else:
-		changeMouseDisplay(Global.MouseOption.CAPTURED)
-		await get_tree().create_timer(gameDelay).timeout
-		var blankShells = shells.count(Global.ShellType.BLANK)
-		aimAndShoot(blankShells < len(shells) - blankShells)
+		if isDealerTurnBlocked:
+			isDealerTurnBlocked = false
+			nextTurn(true)
+		else:
+			changeMouseDisplay(Global.MouseOption.CAPTURED)
+			await get_tree().create_timer(gameDelay).timeout
+			var blankShells = shells.count(Global.ShellType.BLANK)
+			aimAndShoot(blankShells < len(shells) - blankShells)
 
 func aimAndShoot(onPlayer: bool) -> void:
 	$Shotgun.setIsActive(false)
@@ -181,6 +190,12 @@ func aimAndShoot(onPlayer: bool) -> void:
 	await get_tree().create_timer(gameDelay / 2).timeout
 	shotgunTarget = 0
 
+func rack() -> void:
+	var currentShell = shells.pop_front()
+	var newMovingShell = Shell.instantiate()
+	newMovingShell.setProperties(currentShell, true)
+	$ShellEjection.add_child(newMovingShell)
+
 func shoot(onPlayer: bool) -> void:
 	var currentShell = shells.pop_front()
 	var isBlank = currentShell == Global.ShellType.BLANK
@@ -188,9 +203,10 @@ func shoot(onPlayer: bool) -> void:
 	var dealerIsDead
 	if currentShell == Global.ShellType.LIVE:
 		if onPlayer:
-			playerIsDead = player.changeHealth(-1)
+			playerIsDead = player.changeHealth(-shotgunDamage)
 		else:
-			dealerIsDead = dealer.changeHealth(-1)
+			dealerIsDead = dealer.changeHealth(-shotgunDamage)
+	shotgunDamage = shotgunBaseDamage
 	var newMovingShell = Shell.instantiate()
 	newMovingShell.setProperties(currentShell, true)
 	$ShellEjection.add_child(newMovingShell)
@@ -214,7 +230,7 @@ func shoot(onPlayer: bool) -> void:
 			nextTurn(not isBlank or onPlayer)
 
 func toggleHoverTexts(title, description) -> void:
-	if len(title) > 0 and len(description) > 0:
+	if len(title) > 0 or len(description) > 0:
 		$HoverTitle.text = title
 		$HoverDescription.text = description
 		$HoverTitle.show()
@@ -246,6 +262,31 @@ func _on_item_mouse_enter(t, d) -> void:
 
 func _on_item_mouse_leave() -> void:
 	toggleHoverTexts("", "")
+
+func _on_item_click(type) -> void:
+	var shellTypeStr = "live."
+	if shells[0] == Global.ShellType.BLANK:
+		shellTypeStr = "blank."
+	toggleHoverTexts("", "")
+	changeMouseDisplay(Global.MouseOption.CAPTURED)
+	if type == Global.ItemType.LENS:
+		toggleHoverTexts("", str("Next shell is ", shellTypeStr))
+	await get_tree().create_timer(gameDelay / 2).timeout
+	if type == Global.ItemType.KNIFE:
+		shotgunDamage = shotgunDamage * 2
+	if type == Global.ItemType.HANDCUFFS:
+		isDealerTurnBlocked = true
+	if type == Global.ItemType.BEER:
+		rack()
+	if type == Global.ItemType.INVERTER:
+		if shells[0] == Global.ShellType.BLANK:
+			shells[0] = Global.ShellType.LIVE
+		else:
+			shells[0] = Global.ShellType.BLANK
+	if type == Global.ItemType.CIGS:
+		player.changeHealth(1)
+	toggleHoverTexts("", "")
+	changeMouseDisplay(Global.MouseOption.LAST_MODE)
 
 func _on_shotgun_click() -> void:
 	toggleHoverTexts("", "")

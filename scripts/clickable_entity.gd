@@ -13,11 +13,14 @@ var isActive: bool = false
 func setIsActive(newVal: bool) -> void:
 	isActive = newVal
 
+func actionOnClick() -> void:
+	emit_signal("click")
+
 func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if isActive and event is InputEventMouseButton \
 	and event.button_index == MouseButton.MOUSE_BUTTON_LEFT \
 	and event.is_pressed():
-		emit_signal("click")
+		actionOnClick()
 
 func _on_area_2d_mouse_entered() -> void:
 	if isActive:
