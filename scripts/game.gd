@@ -20,7 +20,8 @@ const roundsConfiguration = [
 var currentRound = 0
 var shotgun
 var shotgunRotation: float = 0
-var shotgunTarget: float = 0
+var shotgunRotationTarget: float = 0
+var shotgunPositionYTarget: float = 256
 var shotgunBaseDamage: int = 1
 var shotgunDamage: int = shotgunBaseDamage
 var isPlayerTurn: bool = false
@@ -52,11 +53,14 @@ func _ready() -> void:
 	initRound()
 
 func _process(delta: float) -> void:
-	if shotgunRotation < shotgunTarget:
+	var shotgunYdirection = sign(shotgunPositionYTarget - $Shotgun.position.y)
+	if shotgunRotation < shotgunRotationTarget:
 		shotgunRotation = shotgunRotation + gameSpeed
-	if shotgunRotation > shotgunTarget:
+	if shotgunRotation > shotgunRotationTarget:
 		shotgunRotation = shotgunRotation - gameSpeed
 	$Shotgun.rotation = deg_to_rad(shotgunRotation)
+	if shotgunYdirection != 0:
+		$Shotgun.position.y = $Shotgun.position.y + shotgunYdirection * gameSpeed
 	if Input.is_action_just_pressed("pause") and Input.get_mouse_mode() == Input.MOUSE_MODE_VISIBLE:
 		$PauseMenu.show()
 		get_tree().paused = true
@@ -167,12 +171,12 @@ func shotgunReload() -> void:
 	displayShellsAndThenHideThem()
 
 func seekAndUseItem(type) -> bool:
-	await get_tree().create_timer(gameDelay / 2).timeout
 	var itemStatus
 	for index in len(dealerItemSlots):
 		if dealerItemSlots[index].item:
 			itemStatus = dealerItemSlots[index].item.getStatus()
 			if itemStatus.isActive and itemStatus.type == type:
+				await get_tree().create_timer(gameDelay / 2).timeout
 				useItem(type, false)
 				dealerItemSlots[index].item.queue_free()
 				dealerItemSlots[index].item = null
@@ -213,14 +217,14 @@ func dealerChoice() -> bool:
 	nextShellKnowledge = false
 	if assumeNextShellIsBlank:
 		if await seekAndUseItem(Global.ItemType.INVERTER):
-			return await aimAndShoot(true)
+			return await grabShotgun(false, true)
 		if len(shells) - blankShells > 0:
 			if await seekAndUseItem(Global.ItemType.BEER):
 				return await dealerChoice()
-		return await aimAndShoot(false)
+		return await grabShotgun(false, false)
 	else:
 		await seekAndUseItem(Global.ItemType.KNIFE)
-		return await aimAndShoot(true)
+		return await grabShotgun(false, true)
 
 func nextTurn(playerTurn: bool) -> void:
 	isPlayerTurn = playerTurn
@@ -273,16 +277,28 @@ func useItem(type, isPlayer) -> void:
 	toggleHoverTexts("", "")
 	changeMouseDisplay(Global.MouseOption.LAST_MODE)
 
+func grabShotgun(isPlayer: bool, onPlayer: bool = false) -> bool:
+	var shotgunOffsetY = 32
+	if isPlayer:
+		shotgunPositionYTarget = 256 + shotgunOffsetY
+		return true
+	else:
+		shotgunPositionYTarget = 256 - shotgunOffsetY
+		await get_tree().create_timer(gameDelay / 2).timeout
+		return await aimAndShoot(onPlayer)
+
+
 func aimAndShoot(onPlayer: bool) -> bool:
 	$Shotgun.setIsActive(false)
 	if onPlayer:
-		shotgunTarget = 90
+		shotgunRotationTarget = 90
 	else:
-		shotgunTarget = -90
+		shotgunRotationTarget = -90
 	await get_tree().create_timer(gameDelay / 2).timeout
 	shoot(onPlayer)
 	await get_tree().create_timer(gameDelay / 2).timeout
-	shotgunTarget = 0
+	shotgunRotationTarget = 0
+	shotgunPositionYTarget = 256
 	return true
 
 func rack() -> void:
@@ -369,5 +385,6 @@ func _on_item_click(type) -> void:
 func _on_shotgun_click() -> void:
 	toggleHoverTexts("", "")
 	$Shotgun.setIsActive(false)
+	grabShotgun(true)
 	player.setIsActive(true)
 	dealer.setIsActive(true)
