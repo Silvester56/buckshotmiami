@@ -34,6 +34,9 @@ func changeHealth(delta: int) -> bool:
 	drawHealth()
 	return health == 0
 
+func isHurt() -> bool:
+	return health != maxHealth
+
 func drawHealth() -> void:
 	for h in $Health.get_children():
 		h.queue_free()
