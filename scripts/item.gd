@@ -28,7 +28,7 @@ func setProperties(imposedType, posX, posY) -> void:
 		if config.reRollChance and randi() % 100 < config.reRollChance:
 			config = configuration.pick_random()
 	else:
-		config = configuration.find_custom(isItemType.bind(imposedType))
+		config = configuration[configuration.find_custom(isItemType.bind(imposedType))]
 	type = config.type
 	frame = config.frame
 	title = config.name

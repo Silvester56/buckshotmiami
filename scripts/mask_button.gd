@@ -1,4 +1,12 @@
 extends Button
 
+signal click
+var maskId
+
+func setProperties(id, t, posY) -> void:
+	maskId = id
+	text = t
+	position.y = posY
+
 func _on_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/game.tscn")
+	emit_signal("click", maskId)

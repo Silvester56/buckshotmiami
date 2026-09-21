@@ -35,6 +35,12 @@ func _ready() -> void:
 	changeMouseDisplay(Global.MouseOption.CAPTURED)
 	var roundObject = roundsConfiguration[currentRound]
 	var distanceFromBorder = 50
+	var itemStart = Global.getMaskAbility("itemStart")
+	playerItemSlots = getItemSlotsConfiguration(64, 386, 64, 8)
+	dealerItemSlots = getItemSlotsConfiguration(64, 64, 64, 8)
+	if itemStart:
+		tryPlacingNewItem(itemStart, true)
+	shotgunBaseDamage = Global.getMaskAbility("shotgunBaseDamage")
 	gameSpeed = 1
 	gameDelay = 3 / gameSpeed
 	player = Character.instantiate()
@@ -48,8 +54,6 @@ func _ready() -> void:
 	$Background.add_sibling(player)
 	$Background.add_sibling(dealer)
 	$Background.add_sibling(dialog)
-	playerItemSlots = getItemSlotsConfiguration(64, 386, 64, 8)
-	dealerItemSlots = getItemSlotsConfiguration(64, 64, 64, 8)
 	initRound()
 
 func _process(delta: float) -> void:
@@ -99,7 +103,7 @@ func tryPlacingNewItem(imposedType, isPlayer) -> bool:
 			pass
 		else:
 			item = Item.instantiate()
-			item.setProperties(null, itemSlots[itemIndex].posX, itemSlots[itemIndex].posY)
+			item.setProperties(imposedType, itemSlots[itemIndex].posX, itemSlots[itemIndex].posY)
 			if isPlayer:
 				item.mouse_enter.connect(_on_item_mouse_enter)
 				item.mouse_leave.connect(_on_item_mouse_leave)
