@@ -22,6 +22,5 @@ func _ready() -> void:
 		add_child(maskButton)
 
 func _on_mask_button_pressed(id) -> void:
-	var selectedMask = listOfMasks[listOfMasks.find_custom(checkMaskId.bind(id))]
-	Global.setMaskAbility(selectedMask.key, selectedMask.value)
+	Global.setMask(listOfMasks[listOfMasks.find_custom(checkMaskId.bind(id))])
 	get_tree().change_scene_to_file("res://scenes/game.tscn")

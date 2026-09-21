@@ -30,21 +30,28 @@ var isDealerTurnBlocked: bool = false
 var playerItemSlots
 var dealerItemSlots
 var nextShellKnowledge = false
+var maskEffect = {
+	"healthBonus": 0,
+	"itemStart": null,
+	"shotgunBaseDamage": 1
+}
 
 func _ready() -> void:
 	changeMouseDisplay(Global.MouseOption.CAPTURED)
 	var roundObject = roundsConfiguration[currentRound]
 	var distanceFromBorder = 50
-	var itemStart = Global.getMaskAbility("itemStart")
+	var selectedMask = Global.getMask()
+	updateMaskAbility(selectedMask)
+	var itemStart = maskEffect.itemStart
 	playerItemSlots = getItemSlotsConfiguration(64, 386, 64, 8)
 	dealerItemSlots = getItemSlotsConfiguration(64, 64, 64, 8)
 	if itemStart:
 		tryPlacingNewItem(itemStart, true)
-	shotgunBaseDamage = Global.getMaskAbility("shotgunBaseDamage")
+	shotgunBaseDamage = maskEffect.shotgunBaseDamage
 	gameSpeed = 1
 	gameDelay = 3 / gameSpeed
 	player = Character.instantiate()
-	player.setProperties(true, roundObject.health, 256, 512 - distanceFromBorder)
+	player.setProperties(true, roundObject.health, 256, 512 - distanceFromBorder, selectedMask.id)
 	player.character_click.connect(_on_character_click)
 	dealer = Character.instantiate()
 	dealer.setProperties(false, roundObject.health, 256, distanceFromBorder)
@@ -55,6 +62,10 @@ func _ready() -> void:
 	$Background.add_sibling(dealer)
 	$Background.add_sibling(dialog)
 	initRound()
+
+func updateMaskAbility(mask) -> void:
+	if mask.key and mask.value:
+		maskEffect[mask.key] = mask.value
 
 func _process(delta: float) -> void:
 	var shotgunYdirection = sign(shotgunPositionYTarget - $Shotgun.position.y)

@@ -9,7 +9,7 @@ var health: int
 var isPlayer: bool
 var isActive: bool = false
 
-func setProperties(isPl, maxHe, posX, posY) -> void:
+func setProperties(isPl, maxHe, posX, posY, maskId = 0) -> void:
 	isPlayer = isPl
 	maxHealth = maxHe
 	health = maxHealth
@@ -17,7 +17,7 @@ func setProperties(isPl, maxHe, posX, posY) -> void:
 	position.y = posY
 	drawHealth()
 	if isPlayer:
-		frame = 2
+		frame = 4 + maskId
 		$Health.position.y = 40
 		$HoverLabel.text = "YOU"
 	else:

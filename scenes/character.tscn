@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://djnx21025aqvh"]
 
-[ext_resource type="Texture2D" uid="uid://c6rqfn13lc87v" path="res://assets/characters.png" id="1_agfs1"]
+[ext_resource type="Texture2D" uid="uid://bxgneyuwiapoi" path="res://assets/characters.png" id="1_agfs1"]
 [ext_resource type="Script" uid="uid://6qa7cywby3kd" path="res://scripts/character.gd" id="2_rkhd4"]
 [ext_resource type="PackedScene" uid="uid://b3tg3ebj4c2er" path="res://scenes/heart.tscn" id="3_lrhn5"]
 
@@ -9,7 +9,7 @@ size = Vector2(64, 64)
 
 [node name="Character" type="Sprite2D" unique_id=1163569552]
 texture = ExtResource("1_agfs1")
-hframes = 2
+hframes = 4
 vframes = 2
 script = ExtResource("2_rkhd4")
 Heart = ExtResource("3_lrhn5")
