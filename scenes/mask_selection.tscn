@@ -1,21 +1,34 @@
 [gd_scene format=3 uid="uid://c3dk8wnob3sm"]
 
 [ext_resource type="Script" uid="uid://x0xt5y5iywb2" path="res://scripts/mask_selection.gd" id="1_c85p7"]
-[ext_resource type="PackedScene" uid="uid://cl8whuomp8l6q" path="res://scenes/mask_button.tscn" id="2_7tmsa"]
 [ext_resource type="Texture2D" uid="uid://c716h3rytoi1v" path="res://assets/menu.png" id="3_4v53j"]
+[ext_resource type="PackedScene" uid="uid://duotu0t1e1355" path="res://scenes/mask.tscn" id="3_cqka1"]
+[ext_resource type="Theme" uid="uid://w7dwr6tx8ole" path="res://themes/in_game_text.tres" id="4_cqka1"]
+[ext_resource type="Theme" uid="uid://btfuk8lvwal51" path="res://themes/menu.tres" id="4_krc7m"]
 
-[node name="MaskSelection" type="Control" unique_id=975957132]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="MaskSelection" type="Node2D" unique_id=816379176]
 script = ExtResource("1_c85p7")
-MaskButton = ExtResource("2_7tmsa")
+Mask = ExtResource("3_cqka1")
 
-[node name="Beach" type="TextureRect" parent="." unique_id=485882221]
-layout_mode = 0
+[node name="Beach" type="TextureRect" parent="." unique_id=345144890]
 offset_right = 512.0
 offset_bottom = 512.0
 texture = ExtResource("3_4v53j")
+
+[node name="HoverTitle" type="Label" parent="." unique_id=2059397007]
+offset_left = 256.0
+offset_top = 64.0
+offset_right = 320.0
+offset_bottom = 96.0
+theme = ExtResource("4_krc7m")
+theme_override_font_sizes/font_size = 16
+uppercase = true
+
+[node name="HoverDescription" type="Label" parent="." unique_id=908568919]
+custom_maximum_size = Vector2(192, 64)
+offset_left = 256.0
+offset_top = 96.0
+offset_right = 384.0
+offset_bottom = 128.0
+theme = ExtResource("4_cqka1")
+uppercase = true

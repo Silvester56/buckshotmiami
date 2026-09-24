@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://duotu0t1e1355"]
+
+[ext_resource type="Texture2D" uid="uid://bxgneyuwiapoi" path="res://assets/characters.png" id="1_rv8xw"]
+[ext_resource type="Script" uid="uid://bjmq04xfn1udy" path="res://scripts/mask.gd" id="2_0d8jk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dygff"]
+size = Vector2(64, 64)
+
+[node name="Mask" type="Sprite2D" unique_id=1723977618]
+texture = ExtResource("1_rv8xw")
+hframes = 4
+vframes = 2
+frame = 4
+script = ExtResource("2_0d8jk")
+metadata/_custom_type_script = "uid://cokrg27eget04"
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1520224131]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1105017064]
+shape = SubResource("RectangleShape2D_dygff")
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
